@@ -63,9 +63,9 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
 
         log.error("Api Error - ", ex);
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+                .body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED, ex.getMessage()));
     }
 
     //Não está ativo
@@ -75,9 +75,9 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
 
         log.error("Api Error - ", ex);
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.CONFLICT, ex.getMessage()));
+                .body(new ErrorMessage(request, HttpStatus.FORBIDDEN, ex.getMessage()));
     }
 }
 
