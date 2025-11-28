@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /*
 * Projeto de gerenciamento de carros
-* @author Henrique Bernnardo
+* @author Henrique Bernardo
 * */
 @SpringBootApplication
 public class GerenciamentoDeCarrosApplication {
