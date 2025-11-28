@@ -1,5 +1,9 @@
-package com.exercicio.gerenciamento_de_carros.exception;
+package com.exercicio.gerenciamento_de_carros.exception.global;
 
+import com.exercicio.gerenciamento_de_carros.exception.ActiveNotActiveException;
+import com.exercicio.gerenciamento_de_carros.exception.EmailUniqueViolationException;
+import com.exercicio.gerenciamento_de_carros.exception.EntityNotFoundException;
+import com.exercicio.gerenciamento_de_carros.exception.PasswordIncorrectException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

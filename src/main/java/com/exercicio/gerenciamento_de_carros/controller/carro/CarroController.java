@@ -2,7 +2,7 @@ package com.exercicio.gerenciamento_de_carros.controller.carro;
 
 import com.exercicio.gerenciamento_de_carros.dto.request.RequestCar;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseCar;
-import com.exercicio.gerenciamento_de_carros.exception.ErrorMessage;
+import com.exercicio.gerenciamento_de_carros.exception.global.ErrorMessage;
 import com.exercicio.gerenciamento_de_carros.service.carro.CarroService;
 import com.exercicio.gerenciamento_de_carros.utils.ValidationGroup;
 import io.swagger.v3.oas.annotations.Operation;

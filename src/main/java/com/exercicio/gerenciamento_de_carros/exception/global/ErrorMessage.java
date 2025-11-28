@@ -1,4 +1,4 @@
-package com.exercicio.gerenciamento_de_carros.exception;
+package com.exercicio.gerenciamento_de_carros.exception.global;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;

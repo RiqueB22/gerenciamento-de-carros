@@ -3,7 +3,7 @@ package com.exercicio.gerenciamento_de_carros.controller.auth;
 import com.exercicio.gerenciamento_de_carros.dto.request.LoginRequest;
 import com.exercicio.gerenciamento_de_carros.dto.request.RegisterRequest;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseCar;
-import com.exercicio.gerenciamento_de_carros.exception.ErrorMessage;
+import com.exercicio.gerenciamento_de_carros.exception.global.ErrorMessage;
 import com.exercicio.gerenciamento_de_carros.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
