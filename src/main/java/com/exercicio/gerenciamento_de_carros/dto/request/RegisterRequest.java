@@ -10,7 +10,7 @@ public record RegisterRequest(
         String nome,
         @NotBlank
         @Size(max = 100)
-        @Email(message = "O email deve ser válido")
+        @Email( regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}+$", message = "O email deve ser válido")
         String email,
         @NotBlank
         @Size(min = 8)

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 //Classe DTO Request Login
 public record LoginRequest(
         @NotBlank
-        @Email(message = "O email deve ser válido")
+        @Email(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}+$", message = "O email deve ser válido")
         String email,
         @NotBlank
         @Size(min = 8)
