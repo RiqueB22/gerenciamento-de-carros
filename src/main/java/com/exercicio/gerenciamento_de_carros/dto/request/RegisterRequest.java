@@ -13,6 +13,7 @@ public record RegisterRequest(
         @Email(message = "O email deve ser válido")
         String email,
         @NotBlank
+        @Size(min = 8)
         @Pattern(regexp = "^[A-z0-9]+$", message = "Digite a senha corretamente com letra e numero!")
         String senha,
         @NotNull

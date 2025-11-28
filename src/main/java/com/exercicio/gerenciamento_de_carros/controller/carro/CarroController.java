@@ -2,9 +2,13 @@ package com.exercicio.gerenciamento_de_carros.controller.carro;
 
 import com.exercicio.gerenciamento_de_carros.dto.request.RequestCar;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseCar;
+import com.exercicio.gerenciamento_de_carros.exception.ErrorMessage;
 import com.exercicio.gerenciamento_de_carros.service.carro.CarroService;
 import com.exercicio.gerenciamento_de_carros.utils.ValidationGroup;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,22 +23,36 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/carros")
-@Tag(name = "Carros", description = "Endpoints de get, getById, put, patch, post e delete")
+@Tag(name = "Carros", description = "Endpoints de get, getById, search, put, patch, post e delete")
 public class CarroController {
 
     //Service carro
     private final CarroService carroService;
 
     //Cria carro
+    @Operation(summary = "Registra um novo carro", responses = {
+            @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseCar.class))),
+            @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+    })
     @PostMapping
-    @Operation(summary = "Registra um novo carro")
     public ResponseEntity<ResponseCar> create(@Validated(ValidationGroup.Create.class) @RequestBody RequestCar carro) {
         return ResponseEntity.status(HttpStatus.CREATED).body(carroService.salvar(carro));
     }
 
     //Paginação e filtrada de carros
+    @Operation(summary = "Seleciona uma lista de carros paginada e filtrada", responses = {
+            @ApiResponse(responseCode = "200", description = "Recursos recuperados com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseCar.class))),
+            @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+    })
     @PostMapping("/search")
-    @Operation(summary = "Seleciona todos os carros e permite filtrar")
     public ResponseEntity<Page<ResponseCar>> listarFiltrado(
             @Validated(ValidationGroup.Patch.class)
             @RequestBody(required = false) RequestCar filtro,
@@ -45,29 +63,63 @@ public class CarroController {
     }
 
     //Busca pelo id
+    @Operation(summary = "Seleciona pelo id de carro", responses = {
+            @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseCar.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+    })
     @GetMapping("/{id}")
-    @Operation(summary = "Seleciona um carro")
     public ResponseEntity<ResponseCar> getById(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(carroService.buscarPorId(id));
     }
 
     //Atualiza todas as informações do carro
+    @Operation(summary = "Atualiza todas as informações de carro", responses = {
+            @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseCar.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+            @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+    })
     @PutMapping("/{id}")
-    @Operation(summary = "Atualiza todas as informações do carro")
     public ResponseEntity<ResponseCar> update(@PathVariable UUID id, @Validated(ValidationGroup.Create.class) @RequestBody RequestCar carro) {
         return ResponseEntity.status(HttpStatus.OK).body(carroService.editar(id, carro));
     }
 
     //Atualiza parcialmente as informações do carro
+    @Operation(summary = "Atualiza parcialmente as informações de carro", responses = {
+            @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseCar.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+            @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class)))
+    })
     @PatchMapping("/{id}")
-    @Operation(summary = "Atualiza uma informação de carro")
     public ResponseEntity<ResponseCar> updateParcial(@PathVariable UUID id, @Validated(ValidationGroup.Patch.class) @RequestBody Map<String, Object> updates) {
         return ResponseEntity.status(HttpStatus.OK).body(carroService.editarParcial(id, updates));
     }
 
     //Deleta o carro
+    @Operation(summary = "Deleta o carro", responses = {
+            @ApiResponse(responseCode = "200", description = "Recurso deletado com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ResponseCar.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
+    })
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deleta um carro")
     public ResponseEntity<ResponseCar> delete(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(carroService.deletar(id));
     }

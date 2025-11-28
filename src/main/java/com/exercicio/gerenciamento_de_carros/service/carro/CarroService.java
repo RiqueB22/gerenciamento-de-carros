@@ -86,8 +86,8 @@ public class CarroService {
         return new  ResponseCar(
                 car.getId(),
                 car.getModelo(),
-                car.getCor(),
                 car.getMarca(),
+                car.getCor(),
                 car.getAno(),
                 car.getData_de_criacao(),
                 car.getAtivo()
@@ -99,7 +99,7 @@ public class CarroService {
     public ResponseCar editar(UUID id, RequestCar carro) {
         //Busca pelo id
         var car = carroRepositorio.findById(id).orElseThrow(
-                () -> new RuntimeException("Carro não encontrado!")
+                () -> new EntityNotFoundException("Carro não encontrado!")
         );
 
         //Copia os atributos do DTO Request para um outro objeto
@@ -111,8 +111,8 @@ public class CarroService {
         return new ResponseCar(
                 car.getId(),
                 car.getModelo(),
-                car.getCor(),
                 car.getMarca(),
+                car.getCor(),
                 car.getAno(),
                 car.getData_de_criacao(),
                 car.getAtivo()
@@ -124,7 +124,7 @@ public class CarroService {
     public ResponseCar editarParcial(UUID id, Map<String, Object> updates) {
         //Busca pelo id
         var car = carroRepositorio.findById(id).orElseThrow(
-                () -> new RuntimeException("Carro não encontrado!")
+                () -> new EntityNotFoundException("Carro não encontrado!")
         );
         //Atualiza cada campo que foi informado
         updates.forEach((key, value) -> {
@@ -145,8 +145,8 @@ public class CarroService {
         return new ResponseCar(
                 car.getId(),
                 car.getModelo(),
-                car.getCor(),
                 car.getMarca(),
+                car.getCor(),
                 car.getAno(),
                 car.getData_de_criacao(),
                 car.getAtivo()
@@ -158,7 +158,7 @@ public class CarroService {
 
         //Busca pelo id
         var car = carroRepositorio.findById(id).orElseThrow(
-                () -> new RuntimeException("Carro não encontrado!")
+                () -> new EntityNotFoundException("Carro não encontrado!")
         );
 
         //Deleta o carro
@@ -168,8 +168,8 @@ public class CarroService {
         return new ResponseCar(
                 car.getId(),
                 car.getModelo(),
-                car.getCor(),
                 car.getMarca(),
+                car.getCor(),
                 car.getAno(),
                 car.getData_de_criacao(),
                 car.getAtivo()
