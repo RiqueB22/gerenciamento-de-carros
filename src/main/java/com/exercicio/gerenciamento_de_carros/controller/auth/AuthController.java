@@ -3,6 +3,7 @@ package com.exercicio.gerenciamento_de_carros.controller.auth;
 import com.exercicio.gerenciamento_de_carros.dto.request.LoginRequest;
 import com.exercicio.gerenciamento_de_carros.dto.request.RegisterRequest;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseCar;
+import com.exercicio.gerenciamento_de_carros.dto.response.ResponseUser;
 import com.exercicio.gerenciamento_de_carros.exception.global.ErrorMessage;
 import com.exercicio.gerenciamento_de_carros.service.auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +40,7 @@ public class AuthController {
                             schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<ResponseUser> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.register(request));
     }
 

@@ -1,5 +1,6 @@
 package com.exercicio.gerenciamento_de_carros.service.auth;
 
+import com.exercicio.gerenciamento_de_carros.dto.response.ResponseUser;
 import com.exercicio.gerenciamento_de_carros.utils.jwt.JwtUtils;
 import com.exercicio.gerenciamento_de_carros.dto.request.LoginRequest;
 import com.exercicio.gerenciamento_de_carros.dto.request.RegisterRequest;
@@ -26,7 +27,7 @@ public class AuthService {
     private final JwtUtils jwtUtils;
 
     //Registro de usuario
-    public String register(RegisterRequest request) {
+    public ResponseUser register(RegisterRequest request) {
 
         //Verifica se email já está cadastrado
         if (repository.findByEmail(request.email()).isPresent()) {
@@ -44,7 +45,12 @@ public class AuthService {
         repository.save(user);
 
         //Retorna o token gerado
-        return jwtUtils.gerarToken(user.getId(), user.getEmail(), user.getNome());
+        return new ResponseUser(
+                user.getNome(),
+                user.getEmail(),
+                user.getSenha(),
+                user.getAtivo()
+        );
     }
 
     //Login de usuario
