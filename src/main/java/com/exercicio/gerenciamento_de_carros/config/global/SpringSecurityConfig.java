@@ -2,6 +2,7 @@ package com.exercicio.gerenciamento_de_carros.config.global;
 
 import com.exercicio.gerenciamento_de_carros.config.jwt.SecurityFilter;
 import com.exercicio.gerenciamento_de_carros.exception.CustomAccessDeniedHandler;
+import com.exercicio.gerenciamento_de_carros.exception.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,8 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SpringSecurityConfig {
 
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
-
     private static final String[] DOCUMENTATION_OPENAPI = {
             "/docs/index.html",
             "/docs-cars.html",
@@ -37,6 +36,10 @@ public class SpringSecurityConfig {
 
     //Filtro
     SecurityFilter securityFilter;
+    //Autenticação exceção
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    //Exceção acesso restrito
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     public SpringSecurityConfig(SecurityFilter securityFilter, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.securityFilter = securityFilter;
@@ -45,7 +48,7 @@ public class SpringSecurityConfig {
 
     //Configura o Spring Security
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
 
         return http
                 .csrf(AbstractHttpConfigurer::disable)//Desativa CSRF
@@ -67,7 +70,8 @@ public class SpringSecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(ex -> ex
-                        .accessDeniedHandler(customAccessDeniedHandler))
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                        .authenticationEntryPoint(customAuthenticationEntryPoint))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 //Constrói e retorna a cadeia de filtros
                 .build();

@@ -49,6 +49,9 @@ public class AuthController {
             @ApiResponse(responseCode = "200", description = "Recurso criado com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = LoginResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Não autenticado",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
