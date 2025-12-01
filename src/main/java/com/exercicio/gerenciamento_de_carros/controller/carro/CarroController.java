@@ -1,6 +1,7 @@
 package com.exercicio.gerenciamento_de_carros.controller.carro;
 
 import com.exercicio.gerenciamento_de_carros.dto.request.RequestCar;
+import com.exercicio.gerenciamento_de_carros.dto.request.SearchRequest;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseCar;
 import com.exercicio.gerenciamento_de_carros.exception.global.ErrorMessage;
 import com.exercicio.gerenciamento_de_carros.service.carro.CarroService;
@@ -66,7 +67,7 @@ public class CarroController {
     @PostMapping("/search")
     public ResponseEntity<Page<ResponseCar>> listarFiltrado(
             @Validated(ValidationGroup.Patch.class)
-            @RequestBody(required = false) RequestCar filtro,
+            @RequestBody(required = false) SearchRequest filtro,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {

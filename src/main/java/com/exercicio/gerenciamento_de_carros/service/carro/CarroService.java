@@ -1,6 +1,7 @@
 package com.exercicio.gerenciamento_de_carros.service.carro;
 
 import com.exercicio.gerenciamento_de_carros.dto.request.RequestCar;
+import com.exercicio.gerenciamento_de_carros.dto.request.SearchRequest;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseCar;
 import com.exercicio.gerenciamento_de_carros.entity.carro.Carro;
 import com.exercicio.gerenciamento_de_carros.exception.EntityNotFoundException;
@@ -46,7 +47,7 @@ public class CarroService {
     }
 
     //Lista os carros com filtro
-    public Page<ResponseCar> listarFiltradoPaginado(RequestCar filtro, int page, int size) {
+    public Page<ResponseCar> listarFiltradoPaginado(SearchRequest filtro, int page, int size) {
         //Cria a páginação
         Pageable pageable = PageRequest.of(page, size);
 

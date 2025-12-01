@@ -1,6 +1,7 @@
 package com.exercicio.gerenciamento_de_carros.config.global;
 
 import com.exercicio.gerenciamento_de_carros.config.jwt.SecurityFilter;
+import com.exercicio.gerenciamento_de_carros.exception.CustomAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 //Classe de configuração do Spring Security
 @Configuration
 public class SpringSecurityConfig {
+
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     private static final String[] DOCUMENTATION_OPENAPI = {
             "/docs/index.html",
@@ -35,8 +38,9 @@ public class SpringSecurityConfig {
     //Filtro
     SecurityFilter securityFilter;
 
-    public SpringSecurityConfig(SecurityFilter securityFilter) {
+    public SpringSecurityConfig(SecurityFilter securityFilter, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.securityFilter = securityFilter;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     //Configura o Spring Security
@@ -62,6 +66,8 @@ public class SpringSecurityConfig {
                         .requestMatchers(DOCUMENTATION_OPENAPI).permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedHandler(customAccessDeniedHandler))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 //Constrói e retorna a cadeia de filtros
                 .build();
