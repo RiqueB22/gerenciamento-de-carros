@@ -1,9 +1,7 @@
 package com.exercicio.gerenciamento_de_carros.exception.global;
 
-import com.exercicio.gerenciamento_de_carros.exception.ActiveNotActiveException;
 import com.exercicio.gerenciamento_de_carros.exception.EmailUniqueViolationException;
 import com.exercicio.gerenciamento_de_carros.exception.EntityNotFoundException;
-import com.exercicio.gerenciamento_de_carros.exception.PasswordIncorrectException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -54,30 +52,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request, HttpStatus.NOT_FOUND, ex.getMessage()));
-    }
-
-    //Senha incorreta
-    @ExceptionHandler(PasswordIncorrectException.class)
-    public ResponseEntity<ErrorMessage> passwordIncorrectException(
-            RuntimeException ex,
-            HttpServletRequest request) {
-
-        log.error("Api Error - ", ex);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.UNAUTHORIZED, ex.getMessage()));
-    }
-
-    //Não está ativo
-    @ExceptionHandler(ActiveNotActiveException.class)
-    public ResponseEntity<ErrorMessage> activeNotActiveException(
-            RuntimeException ex,
-            HttpServletRequest request) {
-
-        log.error("Api Error - ", ex);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.FORBIDDEN, ex.getMessage()));
     }
 }
 

@@ -1,4 +1,10 @@
 package com.exercicio.gerenciamento_de_carros.dto.response;
 
-public record ResponseUser(String nome, String email, String senha, Boolean ativo) {
+import com.exercicio.gerenciamento_de_carros.entity.usuario.TypeRole;
+
+import java.util.UUID;
+
+//Response DTO Usuario
+public record ResponseUser(UUID id, String nome, String email,
+                           TypeRole role, Boolean ativo) {
 }

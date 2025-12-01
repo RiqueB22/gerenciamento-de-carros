@@ -2,7 +2,7 @@ package com.exercicio.gerenciamento_de_carros.controller.auth;
 
 import com.exercicio.gerenciamento_de_carros.dto.request.LoginRequest;
 import com.exercicio.gerenciamento_de_carros.dto.request.RegisterRequest;
-import com.exercicio.gerenciamento_de_carros.dto.response.ResponseCar;
+import com.exercicio.gerenciamento_de_carros.dto.response.LoginResponse;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseUser;
 import com.exercicio.gerenciamento_de_carros.exception.global.ErrorMessage;
 import com.exercicio.gerenciamento_de_carros.service.auth.AuthService;
@@ -31,7 +31,7 @@ public class AuthController {
     @Operation(summary = "Registra um novo usuario", responses = {
             @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ResponseCar.class))),
+                            schema = @Schema(implementation = RegisterRequest.class))),
             @ApiResponse(responseCode = "409", description = "email já cadastrado no sistema",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
@@ -48,22 +48,13 @@ public class AuthController {
     @Operation(summary = "Loga o usuario e retorna um token", responses = {
             @ApiResponse(responseCode = "200", description = "Recurso criado com sucesso",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ResponseCar.class))),
-            @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class))),
-            @ApiResponse(responseCode = "401", description = "Senha incorreta",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class))),
-            @ApiResponse(responseCode = "403", description = "Usuario inativo",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class))),
+                            schema = @Schema(implementation = LoginResponse.class))),
             @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(service.login(request));
     }
 }

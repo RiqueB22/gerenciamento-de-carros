@@ -12,6 +12,6 @@ public record LoginRequest(
         String email,
         @NotBlank
         @Size(min = 8)
-        @Pattern(regexp = "^[A-z0-9]+$", message = "Digite a senha corretamente com letras e numeros!")
+        @Pattern(regexp = "^[A-Za-z0-9]+$", message = "Digite a senha corretamente com letras e numeros!")
         String senha) {
 }

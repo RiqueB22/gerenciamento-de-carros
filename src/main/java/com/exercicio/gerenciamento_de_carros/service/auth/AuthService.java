@@ -1,16 +1,16 @@
 package com.exercicio.gerenciamento_de_carros.service.auth;
 
+import com.exercicio.gerenciamento_de_carros.dto.response.LoginResponse;
 import com.exercicio.gerenciamento_de_carros.dto.response.ResponseUser;
-import com.exercicio.gerenciamento_de_carros.utils.jwt.JwtUtils;
+import com.exercicio.gerenciamento_de_carros.service.security.TokenService;
 import com.exercicio.gerenciamento_de_carros.dto.request.LoginRequest;
 import com.exercicio.gerenciamento_de_carros.dto.request.RegisterRequest;
 import com.exercicio.gerenciamento_de_carros.entity.usuario.Usuario;
-import com.exercicio.gerenciamento_de_carros.exception.ActiveNotActiveException;
 import com.exercicio.gerenciamento_de_carros.exception.EmailUniqueViolationException;
-import com.exercicio.gerenciamento_de_carros.exception.EntityNotFoundException;
-import com.exercicio.gerenciamento_de_carros.exception.PasswordIncorrectException;
 import com.exercicio.gerenciamento_de_carros.repository.usuario.UsuarioRepositorio;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,18 +19,16 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AuthService {
 
-    //Repositorio usuario
     private final UsuarioRepositorio repository;
-    //Criptografia de senha
     private final PasswordEncoder encoder;
-    //JWTUtils
-    private final JwtUtils jwtUtils;
+    private final AuthenticationManager authManager;
+    private final TokenService tokenService;
 
     //Registro de usuario
     public ResponseUser register(RegisterRequest request) {
 
         //Verifica se email já está cadastrado
-        if (repository.findByEmail(request.email()).isPresent()) {
+        if (this.repository.findByEmail(request.email()) != null) {
             throw new EmailUniqueViolationException("E-mail já está em uso");
         }
 
@@ -39,6 +37,7 @@ public class AuthService {
         user.setNome(request.nome());
         user.setEmail(request.email());
         user.setSenha(encoder.encode(request.senha()));
+        user.setRole(request.role());
         user.setAtivo(request.ativo());
 
         //Salva usuario
@@ -46,33 +45,28 @@ public class AuthService {
 
         //Retorna o token gerado
         return new ResponseUser(
+                user.getId(),
                 user.getNome(),
                 user.getEmail(),
-                user.getSenha(),
+                user.getRole(),
                 user.getAtivo()
         );
     }
 
     //Login de usuario
-    public String login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
+        //Objeto para ser autenticado
+        var usernamePassword = new UsernamePasswordAuthenticationToken(request.email(), request.senha());
 
-        //Checa se email foi encontrado
-        var user = repository.findByEmail(request.email())
-                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+        //Autentica o usuario
+        var auth = authManager.authenticate(usernamePassword);
 
-        //Checa se a senha está correta
-        if (!encoder.matches(request.senha(), user.getSenha())) {
-            throw new PasswordIncorrectException("Senha incorreta");
-        }
-
-        //Verifica se é ativo
-        if (!user.getAtivo()) {
-            throw new ActiveNotActiveException("Usuário inativo");
-        }
+        //gera token
+        var token = tokenService.generateToken((Usuario) auth.getPrincipal());
 
         //Retorna o token
-        return jwtUtils.gerarToken(user.getId(), user.getEmail(),  user.getNome());
+        return new LoginResponse(
+                token
+        );
     }
 }
-
-
