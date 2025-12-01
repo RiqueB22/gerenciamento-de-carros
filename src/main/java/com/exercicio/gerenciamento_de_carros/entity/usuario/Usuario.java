@@ -53,7 +53,7 @@ public class Usuario implements UserDetails {
             );
         }
         //Caso contrário, o usuário é considerado cliente e recebe a autoridade "ROLE_CLIENT"
-        return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     //Compara a senha fornecida no login com a senha do usuário no banco

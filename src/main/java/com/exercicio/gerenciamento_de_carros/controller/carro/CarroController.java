@@ -31,7 +31,7 @@ public class CarroController {
     private final CarroService carroService;
 
     //Cria carro
-    @Operation(summary = "Registra um novo carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+    @Operation(summary = "Registra um novo carro", description = "Requisição exige um Bearer Token, Acesso restrito a USER",
             security = @SecurityRequirement(name = "security"),
             responses = {
             @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
@@ -50,7 +50,7 @@ public class CarroController {
     }
 
     //Paginação e filtrada de carros
-    @Operation(summary = "Seleciona uma lista de carros paginada e filtrada", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+    @Operation(summary = "Seleciona uma lista de carros paginada e filtrada", description = "Requisição exige um Bearer Token, Acesso restrito a USER",
             security = @SecurityRequirement(name = "security"),
             responses = {
             @ApiResponse(responseCode = "200", description = "Recursos recuperados com sucesso",
@@ -74,7 +74,7 @@ public class CarroController {
     }
 
     //Busca pelo id
-    @Operation(summary = "Seleciona pelo id de carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+    @Operation(summary = "Seleciona pelo id de carro", description = "Requisição exige um Bearer Token, Acesso restrito a USER",
             security = @SecurityRequirement(name = "security"),
             responses = {
             @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso",
@@ -93,7 +93,7 @@ public class CarroController {
     }
 
     //Atualiza todas as informações do carro
-    @Operation(summary = "Atualiza todas as informações de carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+    @Operation(summary = "Atualiza todas as informações de carro", description = "Requisição exige um Bearer Token, Acesso restrito a USER",
             security = @SecurityRequirement(name = "security"),
             responses = {
             @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
@@ -115,7 +115,7 @@ public class CarroController {
     }
 
     //Atualiza parcialmente as informações do carro
-    @Operation(summary = "Atualiza parcialmente as informações de carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+    @Operation(summary = "Atualiza parcialmente as informações de carro", description = "Requisição exige um Bearer Token, Acesso restrito a USER",
             security = @SecurityRequirement(name = "security"),
             responses = {
             @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
@@ -137,7 +137,7 @@ public class CarroController {
     }
 
     //Deleta o carro
-    @Operation(summary = "Deleta o carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+    @Operation(summary = "Deleta o carro", description = "Requisição exige um Bearer Token, Acesso restrito a USER",
             security = @SecurityRequirement(name = "security"),
             responses = {
             @ApiResponse(responseCode = "200", description = "Recurso deletado com sucesso",
