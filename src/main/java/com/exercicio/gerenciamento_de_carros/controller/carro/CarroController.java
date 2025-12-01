@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,10 +31,15 @@ public class CarroController {
     private final CarroService carroService;
 
     //Cria carro
-    @Operation(summary = "Registra um novo carro", responses = {
+    @Operation(summary = "Registra um novo carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
             @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseCar.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
@@ -44,10 +50,15 @@ public class CarroController {
     }
 
     //Paginação e filtrada de carros
-    @Operation(summary = "Seleciona uma lista de carros paginada e filtrada", responses = {
+    @Operation(summary = "Seleciona uma lista de carros paginada e filtrada", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
             @ApiResponse(responseCode = "200", description = "Recursos recuperados com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseCar.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
@@ -63,10 +74,15 @@ public class CarroController {
     }
 
     //Busca pelo id
-    @Operation(summary = "Seleciona pelo id de carro", responses = {
+    @Operation(summary = "Seleciona pelo id de carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
             @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseCar.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class)))
@@ -77,10 +93,15 @@ public class CarroController {
     }
 
     //Atualiza todas as informações do carro
-    @Operation(summary = "Atualiza todas as informações de carro", responses = {
+    @Operation(summary = "Atualiza todas as informações de carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
             @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseCar.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
@@ -94,10 +115,15 @@ public class CarroController {
     }
 
     //Atualiza parcialmente as informações do carro
-    @Operation(summary = "Atualiza parcialmente as informações de carro", responses = {
+    @Operation(summary = "Atualiza parcialmente as informações de carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
             @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseCar.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ErrorMessage.class))),
@@ -111,13 +137,18 @@ public class CarroController {
     }
 
     //Deleta o carro
-    @Operation(summary = "Deleta o carro", responses = {
+    @Operation(summary = "Deleta o carro", description = "Requisição exige um Bearer Token, Acesso restrito a CLIENT",
+            security = @SecurityRequirement(name = "security"),
+            responses = {
             @ApiResponse(responseCode = "200", description = "Recurso deletado com sucesso",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ResponseCar.class))),
+                    @ApiResponse(responseCode = "403", description = "Acesso negado",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorMessage.class))),
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorMessage.class))),
+                            schema = @Schema(implementation = ErrorMessage.class)))
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseCar> delete(@PathVariable UUID id) {

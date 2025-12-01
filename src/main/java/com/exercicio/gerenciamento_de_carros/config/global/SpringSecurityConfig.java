@@ -1,7 +1,6 @@
 package com.exercicio.gerenciamento_de_carros.config.global;
 
 import com.exercicio.gerenciamento_de_carros.config.jwt.SecurityFilter;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,10 +16,28 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 //Classe de configuração do Spring Security
 @Configuration
-@AllArgsConstructor
 public class SpringSecurityConfig {
+
+    private static final String[] DOCUMENTATION_OPENAPI = {
+            "/docs/index.html",
+            "/docs-cars.html",
+            "/docs-cars/**",
+            "/v3/api-docs/**",
+            "/swagger-ui-custom.html",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/**.html",
+            "/webjars/**",
+            "/configuration/**",
+            "/swagger-resources/**"
+    };
+
     //Filtro
     SecurityFilter securityFilter;
+
+    public SpringSecurityConfig(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
 
     //Configura o Spring Security
     @Bean
@@ -42,9 +59,8 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.PUT,"/api/v1/carros/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH,"/api/v1/carros/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/carros/{id}").hasRole("ADMIN")
-                        .requestMatchers("/v3/api-docs/swagger-ui/index.html").permitAll()
-                        .requestMatchers("/v3/api-docs/docs-cars.html").permitAll()
-                        .anyRequest().permitAll()
+                        .requestMatchers(DOCUMENTATION_OPENAPI).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 //Constrói e retorna a cadeia de filtros
