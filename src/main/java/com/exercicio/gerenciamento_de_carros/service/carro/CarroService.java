@@ -57,7 +57,7 @@ public class CarroService {
 
         //Consulta paginada no repositório
         Page<Carro> carrosPage = carroRepositorio
-                .findByMarcaContainingIgnoreCaseAndModeloContainingIgnoreCase(
+                .findByModeloContainingIgnoreCaseAndMarcaContainingIgnoreCase(
                         modelo,
                         marca,
                         pageable

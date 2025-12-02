@@ -7,6 +7,7 @@ import com.exercicio.gerenciamento_de_carros.exception.global.ErrorMessage;
 import com.exercicio.gerenciamento_de_carros.service.carro.CarroService;
 import com.exercicio.gerenciamento_de_carros.utils.ValidationGroup;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +21,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.UUID;
+
+import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
 
 //Classe controller carro
 @RequiredArgsConstructor
@@ -53,6 +56,18 @@ public class CarroController {
     //Paginação e filtrada de carros
     @Operation(summary = "Seleciona uma lista de carros paginada e filtrada", description = "Requisição exige um Bearer Token, Acesso restrito a USER",
             security = @SecurityRequirement(name = "security"),
+            parameters = { @Parameter(
+                    in = QUERY, name = "page", content = @Content(
+                    schema = @Schema(
+                            type = "integer", defaultValue = "0"
+                    )
+            ), description = "Representa a pagina retornada"),
+                    @Parameter(in = QUERY, name = "size", content = @Content(
+                            schema = @Schema(
+                                    type = "integer", defaultValue = "10"
+                            )
+                    ), description = "Representa o total de elementos por pagina")
+            },
             responses = {
             @ApiResponse(responseCode = "200", description = "Recursos recuperados com sucesso",
                     content = @Content(mediaType = "application/json",

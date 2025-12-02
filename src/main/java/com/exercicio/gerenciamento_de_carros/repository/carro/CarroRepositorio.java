@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface CarroRepositorio extends JpaRepository<Carro, UUID> {
     //Faz buscas paginadas no banco de dados
-    Page<Carro> findByMarcaContainingIgnoreCaseAndModeloContainingIgnoreCase(
+    Page<Carro> findByModeloContainingIgnoreCaseAndMarcaContainingIgnoreCase(
             String modelo,
             String marca,
             Pageable pageable
