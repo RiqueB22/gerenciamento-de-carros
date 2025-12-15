@@ -15,6 +15,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 //Filtro de segurança
 @Component
 @AllArgsConstructor
@@ -26,28 +28,55 @@ public class SecurityFilter extends OncePerRequestFilter {
     //Repositorio de usuario
     private UsuarioRepositorio usuarioRepositorio;
 
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getServletPath();
+
+        if (path.startsWith("/api/v1/register")) {
+            return true;
+        }
+
+        return path.startsWith("/api/v1/login")
+                || request.getMethod().equalsIgnoreCase("OPTIONS");
+    }
+
+
     //Faz a filtragem
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         //Recupera o token
-        var token = this.recoverToken(request);
+        String token = this.recoverToken(request);
+
         //Verifica se o token existe
         if (token != null) {
-            //Valida o token
-            var email = tokenService.validateToken(token);
-            //Busca o usuário no banco de dados pelo email extraído do token
-            var user = usuarioRepositorio.findByEmail(email);
+            try {
+                //Valida o token
+                String email = tokenService.validateToken(token);
 
-            //Cria um objeto Authentication do Spring Security com o usuário autenticado
-            var authentication = new UsernamePasswordAuthenticationToken(user,
-                    null,
-                    user.getAuthorities());
-            //Associa detalhes da requisição ao objeto de autenticação
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            //Coloca o usuário autenticado no contexto de segurança do Spring
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                //Busca o usuário no banco de dados pelo email extraído do token
+                var user = usuarioRepositorio.findByEmail(email);
+
+                //Cria um objeto Authentication do Spring Security com o usuário autenticado
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        user.getAuthorities()
+                );
+
+                //Associa detalhes da requisição ao objeto de autenticação
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
+                //Associa detalhes da requisição ao objeto de autenticação
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (Exception ex) {
+                // Token inválido → NÃO autentica, mas deixa seguir
+                SecurityContextHolder.clearContext();
+            }
         }
 
         //Continua a execução da cadeia de filtros da aplicação
@@ -57,12 +86,18 @@ public class SecurityFilter extends OncePerRequestFilter {
     //Recupera o token
     private String recoverToken(HttpServletRequest request) {
         //Pega o valor do header
-        var authHeader = request.getHeader("Authorization");
+        String authHeader = request.getHeader(AUTHORIZATION);
         //Verifica se o cabeçalho não é nulo e se começa com "Bearer "
-        if (authHeader != null && authHeader.startsWith("Bearer "))
-            return authHeader.replace("Bearer ", "");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
+
+        String token = authHeader.substring(7).trim();
+
+        //Ignora tokens inválidos
+        if (token.isBlank() || token.equalsIgnoreCase("undefined")) {
+            return null;
+        }
 
         //Se não houver cabeçalho ou ele não estiver no formato esperado
-        return null;
+        return token;
     }
 }

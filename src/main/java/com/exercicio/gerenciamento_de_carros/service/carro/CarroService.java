@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,7 +40,7 @@ public class CarroService {
                 car.getMarca(),
                 car.getCor(),
                 car.getAno(),
-                car.getData_de_criacao(),
+                car.getCreated_at(),
                 car.getAtivo()
         );
     }
@@ -70,7 +69,7 @@ public class CarroService {
                 car.getMarca(),
                 car.getCor(),
                 car.getAno(),
-                car.getData_de_criacao(),
+                car.getCreated_at(),
                 car.getAtivo()
         ));
     }
@@ -90,7 +89,7 @@ public class CarroService {
                 car.getMarca(),
                 car.getCor(),
                 car.getAno(),
-                car.getData_de_criacao(),
+                car.getCreated_at(),
                 car.getAtivo()
         );
     }
@@ -115,7 +114,7 @@ public class CarroService {
                 car.getMarca(),
                 car.getCor(),
                 car.getAno(),
-                car.getData_de_criacao(),
+                car.getCreated_at(),
                 car.getAtivo()
         );
     }
@@ -134,7 +133,6 @@ public class CarroService {
                 case "marca" -> car.setMarca((String) value);
                 case "ano" -> car.setAno((Integer) value);
                 case "cor" -> car.setCor((String) value);
-                case "data_de_criacao" -> car.setData_de_criacao((LocalDate) value);
                 case "ativo" -> car.setAtivo((Boolean) value);
             }
         });
@@ -149,7 +147,7 @@ public class CarroService {
                 car.getMarca(),
                 car.getCor(),
                 car.getAno(),
-                car.getData_de_criacao(),
+                car.getCreated_at(),
                 car.getAtivo()
         );
     }
@@ -172,7 +170,7 @@ public class CarroService {
                 car.getMarca(),
                 car.getCor(),
                 car.getAno(),
-                car.getData_de_criacao(),
+                car.getCreated_at(),
                 car.getAtivo()
         );
     }

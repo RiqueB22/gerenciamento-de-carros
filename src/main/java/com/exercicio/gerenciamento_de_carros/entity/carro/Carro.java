@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 //Classe entidade carro
@@ -30,14 +29,12 @@ public class Carro {
     private String cor;
     @Column(name = "ano")
     private Integer ano;
-    @Column(name = "data_de_criacao")
-    private LocalDate data_de_criacao;
     @Column(name = "ativo")
     private Boolean ativo;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime created_at;
+    private LocalDate created_at;
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updated_at;
+    private LocalDate updated_at;
 }
